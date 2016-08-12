@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="App" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/oma.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ostos.js"></script>
+    <title>Ostoslista</title>
+</head>
+<body>
+<div id="header">
+    <h1>Ostoslista</h1><br/>
+    <ul>
+        <li>Tämänhetkinen ostoslista</li><li>Tehdyt ostokset</li>
+    </ul>
+</div>
+
+<div id="ostoslistanakyma" ng-controller="OstosController">
+    <div class="container">
+        <div class="btn btn-info" ng-model="lisayksenTila" ng-show="onnistuikoLisays">
+            {{lisayksenTila}}
+        </div>
+    </div>
+    <br/>
+    <div class="container">
+        <table id="lista">
+            <tr>
+                <th>Nimi</th>
+                <th>Määrä</th>
+            </tr>
+            <tr ng-repeat="ostos in ostoslista">
+                <td>{{ostos.nimi}}</td>
+                <td>{{ostos.maara}}</td>
+            </tr>
+        </table>
+        <br/>
+        <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaLisaysnakyma()">
+            {{naytaTaiPiilotaLisays}}
+        </div>
+    </div>
+
+    <div class="container" ng-show="naytetaankoLisaysnakyma">
+        <label>Ostoksen nimi</label><br/>
+        <input type="text" ng-model="ostos.nimi" /><br/>
+        <label>Kuinka monta kappaletta</label><br/>
+        <input type="text" ng-model="ostos.maara" /><br/>
+        <div ng-click="lisaaOstos()" class="nappi">Lisää ostos</div>
+    </div>
+</div>
+
+</body>
+</html>
