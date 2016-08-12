@@ -1,0 +1,4 @@
+language: java
+sudo: false
+script: mvn clean install spring-boot:repackage && mvn test
+deploy: skip_cleanup: true
