@@ -19,36 +19,52 @@
     </ul>
 </div>
 
-<div id="ostoslistanakyma" ng-controller="OstosController">
-    <div class="container">
-        <div class="btn btn-info" ng-model="lisayksenTila" ng-show="onnistuikoLisays">
-            {{lisayksenTila}}
+<div class="container" id="ostoslistanakyma" ng-controller="OstosController">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="btn btn-info" ng-model="lisayksenTila" ng-show="onnistuikoLisays">
+                {{lisayksenTila}}
+            </div>
         </div>
     </div>
     <br/>
-    <div class="container">
-        <table id="lista">
-            <tr>
-                <th>Nimi</th>
-                <th>Määrä</th>
-            </tr>
-            <tr ng-repeat="ostos in ostoslista">
-                <td>{{ostos.nimi}}</td>
-                <td>{{ostos.maara}}</td>
-            </tr>
-        </table>
-        <br/>
-        <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaLisaysnakyma()">
-            {{naytaTaiPiilotaLisays}}
+    <div class="row">
+        <div class="col-md-4">
+            <table id="lista">
+                <tr>
+                    <th>Nimi</th>
+                    <th>Määrä</th>
+                    <th>Yksikkö</th>
+                </tr>
+                <tr ng-class="{yliviivaus: ostos.ostettu}" ng-repeat="ostos in ostoslista" ng-click="ostoslistanTuotettaPainetaan(ostos)">
+                    <td>{{ostos.nimi}}</td>
+                    <td>{{ostos.maara}}</td>
+                    <td>{{ostos.yksikko}}</td>
+                </tr>
+            </table>
+            <br/>
+            <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaLisaysnakyma()">
+                {{naytaTaiPiilotaLisays}}
+            </div>
         </div>
     </div>
 
-    <div class="container" ng-show="naytetaankoLisaysnakyma">
-        <label>Ostoksen nimi</label><br/>
-        <input type="text" ng-model="ostos.nimi" /><br/>
-        <label>Kuinka monta kappaletta</label><br/>
-        <input type="text" ng-model="ostos.maara" /><br/>
-        <div ng-click="lisaaOstos()" class="nappi">Lisää ostos</div>
+    <div class="row">
+        <div class="col-md-4" ng-show="naytetaankoLisaysnakyma">
+            <label>Ostoksen nimi</label><br/>
+            <input class="col-md-8" type="text" ng-model="ostos.nimi" /><br/>
+            <label>Kuinka monta kappaletta(valinnainen)</label><br/>
+            <input class="col-md-4" type="text" ng-model="ostos.maara" />
+            <select class="col-md-4" ng-model="ostos.yksikko">
+                <option>pkt</option>
+                <option>l</option>
+                <option>g</option>
+                <option>kg</option>
+                <option>pll</option>
+                <option>dl</option>
+            </select><br/>
+            <div ng-click="lisaaOstos()" class="nappi">Lisää ostos</div>
+        </div>
     </div>
 </div>
 

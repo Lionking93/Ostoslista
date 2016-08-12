@@ -4,7 +4,9 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
 
     $scope.ostos = {
         nimi: "",
-        maara: ""
+        maara: "",
+        yksikko: "",
+        ostettu: false
     };
 
     $scope.naytaTaiPiilotaLisays = "Lisää uusi ostos";
@@ -14,6 +16,15 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
     $scope.lisayksenTila = "";
 
     $scope.onnistuikoLisays = false;
+
+    $scope.ostoslistanTuotettaPainetaan = function(ostos) {
+        console.log(ostos);
+        if (ostos.ostettu === false) {
+            ostos.ostettu = true;
+        } else {
+            ostos.ostettu = false;
+        }
+    }
 
     $scope.naytaLisaysnakyma = function() {
         if ($scope.naytetaankoLisaysnakyma === true) {
@@ -26,7 +37,7 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
     }
 
     $scope.lisaaOstos = function() {
-        var lisattava = "{\"nimi\":\""+$scope.ostos.nimi+"\",\"maara\":\""+$scope.ostos.maara+"\"}";
+        var lisattava = angular.toJson($scope.ostos);
         console.log(lisattava);
         $http({
             method: 'POST',
@@ -38,6 +49,8 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
             $scope.ostoslista.push(angular.fromJson(lisattava));
             $scope.ostos.nimi = "";
             $scope.ostos.maara = "";
+            $scope.ostos.yksikko = "";
+            $scope.ostos.ostettu = false;
             $scope.naytetaankoLisaysnakyma = false;
             console.log($scope.ostoslista);
             $scope.naytaTaiPiilotaLisays = "Lisää uusi ostos";
