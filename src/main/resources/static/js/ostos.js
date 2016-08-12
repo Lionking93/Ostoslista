@@ -1,4 +1,4 @@
-app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
+app.controller('OstosController', ['$scope', '$http', 'serverCommunication', function($scope, $http, serverCommunication) {
 
     $scope.ostoslista = [];
 
@@ -9,6 +9,8 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
         ostettu: false
     };
 
+    $scope.onkoYhtakaanTuotettaOstettu = false;
+
     $scope.naytaTaiPiilotaLisays = "Lisää uusi ostos";
 
     $scope.naytetaankoLisaysnakyma = false;
@@ -18,15 +20,11 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
     $scope.onnistuikoLisays = false;
 
     $scope.ostoslistanTuotettaPainetaan = function(ostos) {
-        console.log(ostos);
-        if (ostos.ostettu === false) {
-            ostos.ostettu = true;
-        } else {
-            ostos.ostettu = false;
-        }
+        ostos.ostettu === false ? ostos.ostettu = true : ostos.ostettu = false;
+        naytaTaiPiilotaOstoslistanTyhjennysNappi();
     }
 
-    $scope.naytaLisaysnakyma = function() {
+    $scope.naytaTaiPiilotaLisaysnakyma = function() {
         if ($scope.naytetaankoLisaysnakyma === true) {
             $scope.naytetaankoLisaysnakyma = false;
             $scope.naytaTaiPiilotaLisays = "Lisää uusi ostos";
@@ -38,27 +36,66 @@ app.controller('OstosController', ['$scope', '$http', function($scope, $http) {
 
     $scope.lisaaOstos = function() {
         var lisattava = angular.toJson($scope.ostos);
-        console.log(lisattava);
-        $http({
-            method: 'POST',
-            url: '/lisaaOstos',
-            data: lisattava
-        }).then(function successCallback(response) {
-            $scope.onnistuikoLisays = true;
-            $scope.lisayksenTila = "Lisäys onnistui!";
-            $scope.ostoslista.push(angular.fromJson(lisattava));
-            $scope.ostos.nimi = "";
-            $scope.ostos.maara = "";
-            $scope.ostos.yksikko = "";
-            $scope.ostos.ostettu = false;
-            $scope.naytetaankoLisaysnakyma = false;
-            console.log($scope.ostoslista);
-            $scope.naytaTaiPiilotaLisays = "Lisää uusi ostos";
-            console.log("Lisäys onnistui");
-        }, function errorCallback(response) {
-            console.log("Lisäys epäonnistui");
-            $scope.onnistuikoLisays = false;
-            $scope.lisayksenTila = "Lisäys epäonnistui!";
-        });
+        serverCommunication.lahetaOstos(lisattava, updateAfterSuccess(lisattava),
+            updateAfterFailure);
     };
+
+    $scope.poistaYliviivatut = function() {
+        var uusiTaulukko = [];
+        for (i = 0; i < $scope.ostoslista.length; i++) {
+            if ($scope.ostoslista[i].ostettu === false) {
+                uusiTaulukko.push($scope.ostoslista[i]);
+            }
+        }
+        $scope.ostoslista = uusiTaulukko;
+        naytaTaiPiilotaOstoslistanTyhjennysNappi();
+    }
+
+    var onkoOstettuja = function() {
+        for (i = 0; i < $scope.ostoslista.length; i++) {
+            if ($scope.ostoslista[i].ostettu === true) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    var naytaTaiPiilotaOstoslistanTyhjennysNappi = function() {
+        if (onkoOstettuja() === true) {
+            $scope.onkoYhtakaanTuotettaOstettu = true;
+        } else {
+            $scope.onkoYhtakaanTuotettaOstettu = false;
+        }
+    }
+
+    var lisaysOnnistui = function() {
+        $scope.onnistuikoLisays = true;
+        $scope.lisayksenTila = "Lisäys onnistui!";
+    }
+
+    var lisaysEpaonnistui = function() {
+        $scope.onnistuikoLisays = false;
+        $scope.lisayksenTila = "Lisäys epäonnistui!";
+    }
+
+    var updateAfterSuccess = function(lisattava) {
+        lisaysOnnistui();
+        $scope.ostoslista.push(angular.fromJson(lisattava));
+        nollaaOstoksenTiedotLisaysnakymasta();
+        $scope.naytaTaiPiilotaLisaysnakyma();
+        console.log("Lisäys onnistui");
+    }
+
+    var updateAfterFailure = function() {
+        lisaysEpaonnistui();
+        console.log("Lisäys epäonnistui");
+        $scope.naytaTaiPiilotaLisaysnakyma();
+    }
+
+    var nollaaOstoksenTiedotLisaysnakymasta = function() {
+        $scope.ostos.nimi = "";
+        $scope.ostos.maara = "";
+        $scope.ostos.yksikko = "";
+        $scope.ostos.ostettu = false;
+    }
 }]);

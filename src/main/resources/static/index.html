@@ -8,6 +8,7 @@
     <script src="js/angular.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/serverCommunication.js"></script>
     <script src="js/ostos.js"></script>
     <title>Ostoslista</title>
 </head>
@@ -43,8 +44,15 @@
                 </tr>
             </table>
             <br/>
-            <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaLisaysnakyma()">
-                {{naytaTaiPiilotaLisays}}
+            <div class="col-md-5">
+                <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaTaiPiilotaLisaysnakyma()">
+                    {{naytaTaiPiilotaLisays}}
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-2">
+                <div class="nappi" ng-show="onkoYhtakaanTuotettaOstettu" ng-click="poistaYliviivatut()">
+                    Poista yliviivatut
+                </div>
             </div>
         </div>
     </div>
@@ -55,8 +63,9 @@
             <input class="col-md-8" type="text" ng-model="ostos.nimi" /><br/>
             <label>Kuinka monta kappaletta(valinnainen)</label><br/>
             <input class="col-md-4" type="text" ng-model="ostos.maara" />
-            <select class="col-md-4" ng-model="ostos.yksikko">
+            <select class="col-md-3 col-md-offset-1" ng-model="ostos.yksikko">
                 <option>pkt</option>
+                <option>prk</option>
                 <option>l</option>
                 <option>g</option>
                 <option>kg</option>
