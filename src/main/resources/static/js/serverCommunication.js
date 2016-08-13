@@ -1,14 +1,14 @@
 app.factory('serverCommunication', ['$http', function($http) {
     var serverCommunicator = {
-        lahetaOstos: function(lisattava, updateAfterSuccess, updateAfterFailure) {
+        lahetaOstos: function(lisattava, updateAfterSuccessfulAddition, updateAfterFailedAddition) {
             $http({
                 method: 'POST',
                 url: '/lisaaOstos',
                 data: lisattava
             }).then(function successCallback(response) {
-                updateAfterSuccess;
+                updateAfterSuccesfulAddition;
             }, function errorCallback(response) {
-                updateAfterFailure;
+                updateAfterFailedAddition;
             });
         }
     };

@@ -23,7 +23,8 @@
 <div class="container" id="ostoslistanakyma" ng-controller="OstosController">
     <div class="row">
         <div class="col-md-4">
-            <div class="btn btn-info" ng-model="lisayksenTila" ng-show="onnistuikoLisays">
+            <div ng-class="{'btn btn-success': onnistuikoLisays, 'btn btn-danger': !onnistuikoLisays}"
+                 ng-model="lisayksenTila" ng-show="onnistuikoLisays">
                 {{lisayksenTila}}
             </div>
         </div>
@@ -44,15 +45,11 @@
                 </tr>
             </table>
             <br/>
-            <div class="col-md-5">
-                <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaTaiPiilotaLisaysnakyma()">
-                    {{naytaTaiPiilotaLisays}}
-                </div>
+            <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaTaiPiilotaLisaysnakyma()">
+                {{naytaTaiPiilotaLisays}}
             </div>
-            <div class="col-md-5 col-md-offset-2">
-                <div class="nappi" ng-show="onkoYhtakaanTuotettaOstettu" ng-click="poistaYliviivatut()">
-                    Poista yliviivatut
-                </div>
+            <div class="nappi" ng-show="onkoYhtakaanTuotettaOstettu" ng-click="poistaYliviivatut()">
+                Poista yliviivatut
             </div>
         </div>
     </div>

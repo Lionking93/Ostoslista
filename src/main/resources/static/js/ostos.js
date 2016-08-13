@@ -36,8 +36,8 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
 
     $scope.lisaaOstos = function() {
         var lisattava = angular.toJson($scope.ostos);
-        serverCommunication.lahetaOstos(lisattava, updateAfterSuccess(lisattava),
-            updateAfterFailure);
+        serverCommunication.lahetaOstos(lisattava, updateAfterSuccessfulAddition(lisattava),
+            updateAfterFailedAddition);
     };
 
     $scope.poistaYliviivatut = function() {
@@ -49,6 +49,7 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
         }
         $scope.ostoslista = uusiTaulukko;
         naytaTaiPiilotaOstoslistanTyhjennysNappi();
+        poistoOnnistui();
     }
 
     var onkoOstettuja = function() {
@@ -78,7 +79,11 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
         $scope.lisayksenTila = "Lisäys epäonnistui!";
     }
 
-    var updateAfterSuccess = function(lisattava) {
+    var poistoOnnistui = function() {
+        $scope.lisayksenTila = "Poisto onnistui!";
+    }
+
+    var updateAfterSuccessfulAddition = function(lisattava) {
         lisaysOnnistui();
         $scope.ostoslista.push(angular.fromJson(lisattava));
         nollaaOstoksenTiedotLisaysnakymasta();
@@ -86,7 +91,7 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
         console.log("Lisäys onnistui");
     }
 
-    var updateAfterFailure = function() {
+    var updateAfterFailedAddition = function() {
         lisaysEpaonnistui();
         console.log("Lisäys epäonnistui");
         $scope.naytaTaiPiilotaLisaysnakyma();
