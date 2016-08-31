@@ -1,6 +1,6 @@
 h1 {
     display: inline-block;
-    font-size: 24px;
+    font-size: 4em;
 }
 
 #header {
@@ -17,7 +17,6 @@ h1 {
 #header > ul > li {
     display: inline-block;
     background-color: #E8BE4A;
-    padding: 10px;
     cursor: pointer;
 }
 
@@ -27,6 +26,7 @@ h1 {
 
 body {
     background-color: #F7F577;
+    font-size: 3em;
 }
 
 #lista {
@@ -53,16 +53,24 @@ tr:hover {
     padding: 5px;
     background-color: #E8BE4A;
     text-align: center;
-    cursor: pointer;
     margin: 20px 0px 20px 0px;
 }
 
 .nappi:hover {
     background-color: #CCA024;
+    cursor: pointer;
 }
 
 .yliviivaus {
     text-decoration: line-through;
+}
+
+li > a, li > a:hover, li > a:focus{
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
 }
 
 

@@ -1,0 +1,6 @@
+1 Maito 1 l
+2 Banaani 2 null
+3 Tonnikala 1 prk
+4 Omena 2 null
+5 Kalapuikot null null
+6 Homejuusto 2 null

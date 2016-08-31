@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div ng-class="{'btn btn-success': onnistuikoLisays, 'btn btn-danger': !onnistuikoLisays}"
+                 ng-model="lisayksenTila" ng-show="onnistuikoLisays">
+                {{lisayksenTila}}
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <table id="lista">
+                <tr>
+                    <th>Nimi</th>
+                    <th>Määrä</th>
+                    <th>Yksikkö</th>
+                </tr>
+                <tr ng-class="{yliviivaus: ostos.ostettu}" ng-repeat="ostos in ostoslista" ng-click="ostoslistanTuotettaPainetaan(ostos)">
+                    <td>{{ostos.nimi}}</td>
+                    <td>{{ostos.maara}}</td>
+                    <td>{{ostos.yksikko}}</td>
+                </tr>
+            </table>
+            <br/>
+            <div class="nappi" ng-model="naytaTaiPiilotaLisays" ng-click="naytaTaiPiilotaLisaysnakyma()">
+                {{naytaTaiPiilotaLisays}}
+            </div>
+            <div class="nappi" ng-show="onkoYhtakaanTuotettaOstettu" ng-click="poistaYliviivatut()">
+                Poista yliviivatut
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" ng-show="naytetaankoLisaysnakyma">
+            <label>Ostoksen nimi</label><br/>
+            <input class="col-md-12" type="text" ng-model="ostos.nimi" /><br/>
+            <label>Kuinka monta kappaletta(valinnainen)</label><br/>
+            <input class="col-md-6" type="text" ng-model="ostos.maara" />
+            <select class="col-md-5 col-md-offset-1" ng-model="ostos.yksikko">
+                <option>pkt</option>
+                <option>prk</option>
+                <option>l</option>
+                <option>g</option>
+                <option>kg</option>
+                <option>pll</option>
+                <option>dl</option>
+            </select><br/>
+            <div ng-click="lisaaOstos()" class="nappi">Lisää ostos</div>
+        </div>
+    </div>
+</div>

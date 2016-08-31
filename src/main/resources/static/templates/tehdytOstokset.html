@@ -1,0 +1,19 @@
+<div class="container">
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <table id="lista">
+                <tr>
+                    <th>Nimi</th>
+                    <th>Määrä</th>
+                    <th>Yksikkö</th>
+                </tr>
+                <tr ng-repeat="ostos in tehdytOstokset">
+                    <td>{{ostos.nimi}}</td>
+                    <td>{{ostos.maara}}</td>
+                    <td>{{ostos.yksikko}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

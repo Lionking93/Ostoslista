@@ -1,8 +1,9 @@
-app.controller('OstosController', ['$scope', '$http', 'serverCommunication', function($scope, $http, serverCommunication) {
+app.controller('OstosController', ['$scope', 'serverCommunication', function($scope, serverCommunication) {
 
     $scope.ostoslista = [];
 
     $scope.ostos = {
+        id: "",
         nimi: "",
         maara: "",
         yksikko: "",
@@ -36,21 +37,33 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
 
     $scope.lisaaOstos = function() {
         var lisattava = angular.toJson($scope.ostos);
-        serverCommunication.lahetaOstos(lisattava, updateAfterSuccessfulAddition(lisattava),
-            updateAfterFailedAddition);
+        var lisaysPyynto = serverCommunication.lahetaOstos(lisattava);
+        lisaysPyynto.then(function(data) {
+            $scope.ostoslista = data;
+            updateAfterSuccessfulAddition;
+        })
     };
 
     $scope.poistaYliviivatut = function() {
         var uusiTaulukko = [];
+        var poistettavat = [];
         for (i = 0; i < $scope.ostoslista.length; i++) {
             if ($scope.ostoslista[i].ostettu === false) {
                 uusiTaulukko.push($scope.ostoslista[i]);
+            } else {
+                poistettavat.push($scope.ostoslista[i]);
             }
         }
+        serverCommunication.poistaOstokset(angular.toJson(poistettavat));
         $scope.ostoslista = uusiTaulukko;
         naytaTaiPiilotaOstoslistanTyhjennysNappi();
         poistoOnnistui();
     }
+
+    var hakuPyynto = serverCommunication.haeTehdytOstokset();
+    hakuPyynto.then(function(data) {
+        $scope.ostoslista = data;
+    });
 
     var onkoOstettuja = function() {
         for (i = 0; i < $scope.ostoslista.length; i++) {
@@ -85,7 +98,6 @@ app.controller('OstosController', ['$scope', '$http', 'serverCommunication', fun
 
     var updateAfterSuccessfulAddition = function(lisattava) {
         lisaysOnnistui();
-        $scope.ostoslista.push(angular.fromJson(lisattava));
         nollaaOstoksenTiedotLisaysnakymasta();
         $scope.naytaTaiPiilotaLisaysnakyma();
         console.log("Lisäys onnistui");
