@@ -1,5 +1,11 @@
 app.controller('OstosController', ['$scope', 'serverCommunication', function($scope, serverCommunication) {
 
+    var hakuPyynto = serverCommunication.haeOstokset();
+    hakuPyynto.then(function(data) {
+        $scope.ostoslista = data;
+        lisaaPoistettavaKentat();
+    });
+
     $scope.ostoslista = [];
 
     $scope.ostos = {
@@ -7,7 +13,8 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
         nimi: "",
         maara: "",
         yksikko: "",
-        ostettu: false
+        ostettu: false,
+        poistettava: false
     };
 
     $scope.onkoYhtakaanTuotettaOstettu = false;
@@ -21,7 +28,7 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
     $scope.onnistuikoLisays = false;
 
     $scope.ostoslistanTuotettaPainetaan = function(ostos) {
-        ostos.ostettu === false ? ostos.ostettu = true : ostos.ostettu = false;
+        ostos.poistettava === false ? ostos.poistettava = true : ostos.poistettava = false;
         naytaTaiPiilotaOstoslistanTyhjennysNappi();
     }
 
@@ -40,41 +47,47 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
         var lisaysPyynto = serverCommunication.lahetaOstos(lisattava);
         lisaysPyynto.then(function(data) {
             $scope.ostoslista = data;
-            updateAfterSuccessfulAddition;
+            lisaaPoistettavaKentat();
+            paivitaOnnistuneenLisayksenJalkeen();
+        }, function(data) {
+            paivitaEpaonnistuneenLisayksenJalkeen();
         })
     };
 
     $scope.poistaYliviivatut = function() {
-        var uusiTaulukko = [];
         var poistettavat = [];
+        console.log($scope.ostoslista);
         for (i = 0; i < $scope.ostoslista.length; i++) {
-            if ($scope.ostoslista[i].ostettu === false) {
-                uusiTaulukko.push($scope.ostoslista[i]);
-            } else {
+            if ($scope.ostoslista[i].poistettava === true) {
+                $scope.ostoslista[i].ostettu = true;
                 poistettavat.push($scope.ostoslista[i]);
             }
         }
-        serverCommunication.poistaOstokset(angular.toJson(poistettavat));
-        $scope.ostoslista = uusiTaulukko;
-        naytaTaiPiilotaOstoslistanTyhjennysNappi();
-        poistoOnnistui();
+        var poistoPyynto = serverCommunication.merkitseOstetuiksi(angular.toJson(poistettavat));
+        poistoPyynto.then(function(data) {
+            $scope.ostoslista = data;
+            lisaaPoistettavaKentat();
+            naytaTaiPiilotaOstoslistanTyhjennysNappi();
+            poistoOnnistui();
+        });
     }
 
-    var hakuPyynto = serverCommunication.haeTehdytOstokset();
-    hakuPyynto.then(function(data) {
-        $scope.ostoslista = data;
-    });
+    function lisaaPoistettavaKentat() {
+        angular.forEach($scope.ostoslista, function(ostos) {
+            ostos.poistettava = false;
+        });
+    }
 
-    var onkoOstettuja = function() {
+    function onkoOstettuja() {
         for (i = 0; i < $scope.ostoslista.length; i++) {
-            if ($scope.ostoslista[i].ostettu === true) {
+            if ($scope.ostoslista[i].poistettava === true) {
                 return true;
             }
         }
         return false;
     }
 
-    var naytaTaiPiilotaOstoslistanTyhjennysNappi = function() {
+    function naytaTaiPiilotaOstoslistanTyhjennysNappi() {
         if (onkoOstettuja() === true) {
             $scope.onkoYhtakaanTuotettaOstettu = true;
         } else {
@@ -82,37 +95,38 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
         }
     }
 
-    var lisaysOnnistui = function() {
+    function lisaysOnnistui() {
         $scope.onnistuikoLisays = true;
         $scope.lisayksenTila = "Lisäys onnistui!";
     }
 
-    var lisaysEpaonnistui = function() {
+    function lisaysEpaonnistui() {
         $scope.onnistuikoLisays = false;
         $scope.lisayksenTila = "Lisäys epäonnistui!";
     }
 
-    var poistoOnnistui = function() {
+    function poistoOnnistui() {
         $scope.lisayksenTila = "Poisto onnistui!";
     }
 
-    var updateAfterSuccessfulAddition = function(lisattava) {
+    function paivitaOnnistuneenLisayksenJalkeen(lisattava) {
         lisaysOnnistui();
         nollaaOstoksenTiedotLisaysnakymasta();
         $scope.naytaTaiPiilotaLisaysnakyma();
         console.log("Lisäys onnistui");
     }
 
-    var updateAfterFailedAddition = function() {
+    function paivitaEpaonnistuneenLisayksenJalkeen() {
         lisaysEpaonnistui();
         console.log("Lisäys epäonnistui");
         $scope.naytaTaiPiilotaLisaysnakyma();
     }
 
-    var nollaaOstoksenTiedotLisaysnakymasta = function() {
+    function nollaaOstoksenTiedotLisaysnakymasta() {
         $scope.ostos.nimi = "";
         $scope.ostos.maara = "";
         $scope.ostos.yksikko = "";
         $scope.ostos.ostettu = false;
+        $scope.ostos.poistettava = false;
     }
 }]);

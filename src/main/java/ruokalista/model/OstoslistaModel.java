@@ -23,7 +23,7 @@ public class OstoslistaModel {
         return this.tiedostojenKasittelija.haeOstokset();
     }
 
-    public void poistaOstoksia(List<Ostos> ostokset) {
-        this.tiedostojenKasittelija.poistaOstoksia(ostokset);
+    public void merkitseOstoksiaOstetuiksi(List<Ostos> ostokset) {
+        this.tiedostojenKasittelija.merkitseOstoksiaOstetuiksi(ostokset);
     }
 }

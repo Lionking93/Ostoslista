@@ -17,37 +17,34 @@ public class TiedostoonKirjoittaja {
         this.formater = pFormater;
     }
 
-    public boolean kirjoitaTiedostoon(Ostos ostos) {
+    public void kirjoitaTiedostoon(Ostos ostos) {
         try {
             FileWriter kirjoittaja = new FileWriter("ostoslista.txt", true);
             kirjoittaja.write(formater.ostosToString(ostos)+"\n");
             kirjoittaja.close();
-            return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            System.out.println("Tiedostoon kirjoittaminen epäonnistui!");
         }
     }
 
-    public boolean poistaTiedostosta(List<Ostos> kaikkiOstokset, List<Ostos> poistettavat) {
+    public void muutaTiedostossa(List<Ostos> kaikkiOstokset, List<Ostos> muutettavat) {
         try {
             FileWriter kirjoittaja = new FileWriter("ostoslista.txt");
-            boolean poistettavaLoytyi = false;
             for (Ostos ostos1 : kaikkiOstokset) {
-                for (Ostos ostos2 : poistettavat) {
-                    if (ostos1 == ostos2) {
-                        poistettavaLoytyi = true;
+                boolean muutettavaLoytyi = false;
+                for (Ostos ostos2 : muutettavat) {
+                    if (ostos1.equals(ostos2)) {
+                        muutettavaLoytyi = true;
                     }
                 }
-                if (!poistettavaLoytyi) {
-                    kirjoittaja.write(formater.ostosToString(ostos1)+"\n");
+                if (ostos1.getOstettu() == false) {
+                    ostos1.setOstettu(muutettavaLoytyi);
                 }
+                kirjoittaja.write(formater.ostosToString(ostos1)+"\n");
             }
             kirjoittaja.close();
-            return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            System.out.println("Ostoksen poistaminen tiedostosta epäonnistui.");
         }
     }
 }

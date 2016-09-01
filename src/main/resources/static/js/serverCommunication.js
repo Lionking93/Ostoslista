@@ -13,26 +13,28 @@ app.factory('serverCommunication', ['$http', function($http) {
                 return response.data;
             });
         },
-        poistaOstokset: function(ostoslista) {
-            $http({
+        merkitseOstetuiksi: function(ostoslista) {
+            return $http({
                 method: 'POST',
-                url: '/poistaOstokset',
+                url: '/merkitseOstetuiksi',
                 data: ostoslista
             }).then(function successCallback(response) {
                 console.log("Poisto onnistui!");
-            }, function errorCallback(response) {
-                console.log("Poisto epäonnistui");
-            });
-        },
-        haeTehdytOstokset: function() {
-            return $http({
-                method: 'GET',
-                url: '/haeTehdytOstokset'
-            }).then(function successCallback(response) {
-                console.log("Tehtyjen ostosten haku onnistui!");
                 return response.data;
             }, function errorCallback(response) {
-                console.log("Tehtyjen ostosten haku epäonnistui!");
+                console.log("Poisto epäonnistui");
+                return response.data;
+            });
+        },
+        haeOstokset: function() {
+            return $http({
+                method: 'GET',
+                url: '/haeOstokset'
+            }).then(function successCallback(response) {
+                console.log("Ostosten haku onnistui!");
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("Ostosten haku epäonnistui!");
                 return response.data;
             })
         }

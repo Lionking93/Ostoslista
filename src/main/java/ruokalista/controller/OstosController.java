@@ -22,30 +22,23 @@ public class OstosController {
     @RequestMapping(value="/lisaaOstos", method = RequestMethod.POST)
     public List<Ostos> lisaaOstos(@RequestBody Ostos pOstos) {
         this.ostoslista.tallennaOstos(pOstos);
-        System.out.println("Lisätty ostos " + pOstos.getNimi() + " " + pOstos.getMaara() + " " + pOstos.getYksikko());
+        System.out.println("Lisätty ostos " + pOstos.getNimi());
         return this.ostoslista.haeOstokset();
     }
 
-    @RequestMapping(value="/poistaOstokset", method = RequestMethod.POST)
-    public void poistaOstokset(@RequestBody List<Ostos> pOstokset) {
-        this.ostoslista.poistaOstoksia(pOstokset);
-        for (Ostos ostos : pOstokset) {
-            System.out.println(ostos.getNimi() + " " + ostos.getMaara() + " " + ostos.getYksikko());
+    @RequestMapping(value="/merkitseOstetuiksi", method = RequestMethod.POST)
+    public List<Ostos> poistaOstokset(@RequestBody List<Ostos> pOstokset) {
+        System.out.println();
+        System.out.println("Poistettavat: ");
+        for (Ostos o : pOstokset) {
+            System.out.println(o);
         }
+        this.ostoslista.merkitseOstoksiaOstetuiksi(pOstokset);
+        return this.ostoslista.haeOstokset();
     }
 
-    @RequestMapping(value="/haeTehdytOstokset", method = RequestMethod.GET)
+    @RequestMapping(value="/haeOstokset", method = RequestMethod.GET)
     public List<Ostos> haeTehdytOstokset() {
-        List<Ostos> ostokset = this.ostoslista.haeOstokset();
-                /*new ArrayList();
-        for (int i = 0; i < 3; i++) {
-            Ostos ostos = new Ostos();
-            ostos.setNimi("Maito"+i);
-            ostos.setMaara("1");
-            ostos.setYksikko("prk");
-            System.out.println(ostos.getNimi() + " " + ostos.getMaara() + " " + ostos.getYksikko());
-            ostokset.add(ostos);
-        }*/
-        return ostokset;
+        return this.ostoslista.haeOstokset();
     }
 }

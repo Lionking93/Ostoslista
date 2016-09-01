@@ -1,9 +1,9 @@
 package ruokalista.fileOps;
 
 import org.springframework.stereotype.Component;
+import ruokalista.querys.Ostoslista;
 import ruokalista.wrappers.Ostos;
 
-import java.io.File;
 import java.util.List;
 
 @Component
@@ -11,28 +11,34 @@ public class TiedostoOperaatiot implements TiedonKasittelyOperaatiot {
 
     private TiedostonLukija tiedostonLukija;
     private TiedostoonKirjoittaja tiedostoonKirjoittaja;
+    private Ostoslista ostoslista;
 
-    public TiedostoOperaatiot(TiedostonLukija pTiedostonLukija, TiedostoonKirjoittaja pTiedostoonKirjoittaja) {
+    public TiedostoOperaatiot(TiedostonLukija pTiedostonLukija, TiedostoonKirjoittaja pTiedostoonKirjoittaja,
+                              Ostoslista pOstoslista) {
         this.tiedostonLukija = pTiedostonLukija;
         this.tiedostoonKirjoittaja = pTiedostoonKirjoittaja;
+        this.ostoslista = pOstoslista;
     }
 
-    public boolean tallennaOstos(Ostos ostos) {
-        if (!tiedostonLukija.tiedostoOnOlemassa("ostoslista.txt")) {
+    public void tallennaOstos(Ostos ostos) {
+        if (!tiedostonLukija.tiedostoOnOlemassa("ostoslista.txt") || ostoslista.onTyhja()) {
             ostos.setId(1);
         } else {
-            ostos.setId(tiedostonLukija.viimeinenIdTiedostossa("ostoslista.txt")+1);
+            int id = this.ostoslista.viimeinen().getId();
+            ostos.setId(id+1);
         }
-        return tiedostoonKirjoittaja.kirjoitaTiedostoon(ostos);
+        tiedostoonKirjoittaja.kirjoitaTiedostoon(ostos);
+        ostoslista.paivita();
     }
 
     public List<Ostos> haeOstokset() {
-        List<Ostos> ostokset = tiedostonLukija.lueTiedosto("ostoslista.txt");
-        return ostokset;
+        ostoslista.paivita();
+        return ostoslista.getOstoslista();
     }
 
-    public boolean poistaOstoksia(List<Ostos> poistettavat) {
+    public void merkitseOstoksiaOstetuiksi(List<Ostos> poistettavat) {
         List<Ostos> kaikkiOstokset = haeOstokset();
-        return tiedostoonKirjoittaja.poistaTiedostosta(kaikkiOstokset, poistettavat);
+        tiedostoonKirjoittaja.muutaTiedostossa(kaikkiOstokset, poistettavat);
+        ostoslista.paivita();
     }
 }

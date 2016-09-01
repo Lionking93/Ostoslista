@@ -7,6 +7,7 @@ public class Ostos implements Comparable {
     private String nimi;
     private String maara;
     private String yksikko;
+    private boolean ostettu;
 
     public int getId() {
         return this.id;
@@ -40,6 +41,14 @@ public class Ostos implements Comparable {
         this.yksikko = pYksikko;
     }
 
+    public boolean getOstettu() {
+        return this.ostettu;
+    }
+
+    public void setOstettu(boolean pOstettu) {
+        this.ostettu = pOstettu;
+    }
+
     public int compareTo(Object o) {
         Ostos verrattava = (Ostos) o;
         if (this.id < verrattava.getId()) {
@@ -49,5 +58,16 @@ public class Ostos implements Comparable {
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Ostos verrattava = (Ostos) o;
+        return this.id == verrattava.getId() ? true : false;
+    }
+
+    @Override
+    public String toString() {
+        return this.id + " " + this.nimi + " " + this.maara + " " + this.yksikko + " " + this.ostettu;
     }
 }

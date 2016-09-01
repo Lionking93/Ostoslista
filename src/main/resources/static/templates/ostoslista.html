@@ -16,7 +16,7 @@
                     <th>Määrä</th>
                     <th>Yksikkö</th>
                 </tr>
-                <tr ng-class="{yliviivaus: ostos.ostettu}" ng-repeat="ostos in ostoslista" ng-click="ostoslistanTuotettaPainetaan(ostos)">
+                <tr ng-class="{yliviivaus: ostos.poistettava}" ng-repeat="ostos in ostoslista | filter:{ostettu:false}" ng-click="ostoslistanTuotettaPainetaan(ostos)">
                     <td>{{ostos.nimi}}</td>
                     <td>{{ostos.maara}}</td>
                     <td>{{ostos.yksikko}}</td>
@@ -46,6 +46,8 @@
                 <option>kg</option>
                 <option>pll</option>
                 <option>dl</option>
+                <option>pss</option>
+                <option>tlk</option>
             </select><br/>
             <div ng-click="lisaaOstos()" class="nappi">Lisää ostos</div>
         </div>

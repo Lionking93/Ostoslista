@@ -26,7 +26,7 @@ public class TiedostonLukija {
                 ostokset.add(ostos);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Tiedostoa ei ole vielä luotu.");
         }
         Collections.sort(ostokset);
         return ostokset;
@@ -39,11 +39,5 @@ public class TiedostonLukija {
         } catch (FileNotFoundException e) {
             return false;
         }
-    }
-
-    public int viimeinenIdTiedostossa(String tiedosto) {
-        List<Ostos> ostokset = lueTiedosto(tiedosto);
-        System.out.println(ostokset.get(ostokset.size()-1).getId());
-        return ostokset.get(ostokset.size()-1).getId();
     }
 }
