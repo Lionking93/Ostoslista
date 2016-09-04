@@ -1,6 +1,6 @@
 language: java
 sudo: false
-script: mvn clean install spring-boot:repackage && mvn test
+script: mvn clean && mvn test
 deploy:
   provider: heroku
   api_key:

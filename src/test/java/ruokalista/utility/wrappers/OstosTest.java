@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class OstosTest {
 
-    public Ostos luoOstos(int pId, String pNimi, String pMaara, String pYksikko) {
+    public Ostos luoOstos(int pId, String pNimi, int pMaara, String pYksikko) {
         Ostos ostos = new Ostos();
         ostos.setId(pId);
         ostos.setNimi(pNimi);
@@ -23,9 +23,9 @@ public class OstosTest {
 
     @Test
     public void compareToRecognizesTwoPurchasesWithSameId() {
-        Ostos ostos1 = luoOstos(1, "Maito", "3", "l");
+        Ostos ostos1 = luoOstos(1, "Maito", 3, "l");
 
-        Ostos ostos2 = luoOstos(1, "Suklaa", "5", "");
+        Ostos ostos2 = luoOstos(1, "Suklaa", 5, "");
 
         assertEquals(0, ostos1.compareTo(ostos2));
         assertEquals(true, ostos1.equals(ostos2));
@@ -36,7 +36,7 @@ public class OstosTest {
         List<Ostos> ostokset = new ArrayList();
 
         for(int i = 5; i > 0; i--) {
-            Ostos ostos = luoOstos(i, "Maito"+i, "2", "l");
+            Ostos ostos = luoOstos(i, "Maito"+i, 2, "l");
             ostokset.add(ostos);
         }
 
@@ -52,7 +52,7 @@ public class OstosTest {
         List<Ostos> ostokset = new ArrayList();
 
         for(int i = 5; i > 0; i--) {
-            Ostos ostos = luoOstos(i, "Maito"+i, "2", "l");
+            Ostos ostos = luoOstos(i, "Maito"+i, 2, "l");
             ostokset.add(ostos);
         }
 

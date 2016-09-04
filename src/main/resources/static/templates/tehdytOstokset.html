@@ -8,7 +8,7 @@
                     <th>Määrä</th>
                     <th>Yksikkö</th>
                 </tr>
-                <tr ng-repeat="ostos in tehdytOstokset">
+                <tr ng-repeat="ostos in tehdytOstokset | filter:{ostettu:true}">
                     <td>{{ostos.nimi}}</td>
                     <td>{{ostos.maara}}</td>
                     <td>{{ostos.yksikko}}</td>

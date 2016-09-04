@@ -44,6 +44,7 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
 
     $scope.lisaaOstos = function() {
         var lisattava = angular.toJson($scope.ostos);
+        console.log(lisattava);
         var lisaysPyynto = serverCommunication.lahetaOstos(lisattava);
         lisaysPyynto.then(function(data) {
             $scope.ostoslista = data;
@@ -113,12 +114,10 @@ app.controller('OstosController', ['$scope', 'serverCommunication', function($sc
         lisaysOnnistui();
         nollaaOstoksenTiedotLisaysnakymasta();
         $scope.naytaTaiPiilotaLisaysnakyma();
-        console.log("Lisäys onnistui");
     }
 
     function paivitaEpaonnistuneenLisayksenJalkeen() {
         lisaysEpaonnistui();
-        console.log("Lisäys epäonnistui");
         $scope.naytaTaiPiilotaLisaysnakyma();
     }
 

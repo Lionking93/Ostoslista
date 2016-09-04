@@ -2,3 +2,4 @@ target
 *.iml
 .idea
 ostoslista.txt
+local_database_url

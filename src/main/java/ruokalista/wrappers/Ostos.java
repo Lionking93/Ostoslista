@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class Ostos implements Comparable {
     private int id;
     private String nimi;
-    private String maara;
+    private int maara;
     private String yksikko;
     private boolean ostettu;
 
@@ -25,11 +25,11 @@ public class Ostos implements Comparable {
         this.nimi = pNimi;
     }
 
-    public String getMaara() {
+    public int getMaara() {
         return this.maara;
     }
 
-    public void setMaara(String pMaara) {
+    public void setMaara(int pMaara) {
         this.maara = pMaara;
     }
 

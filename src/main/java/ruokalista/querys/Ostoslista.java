@@ -1,7 +1,6 @@
 package ruokalista.querys;
 
 import org.springframework.stereotype.Component;
-import ruokalista.fileOps.TiedostonLukija;
 import ruokalista.wrappers.Ostos;
 
 import java.util.List;
@@ -9,11 +8,8 @@ import java.util.List;
 @Component
 public class Ostoslista {
     private List<Ostos> ostokset;
-    private TiedostonLukija tiedostonLukija;
 
-    public Ostoslista(TiedostonLukija pTiedostonLukija) {
-        this.tiedostonLukija = pTiedostonLukija;
-        this.ostokset = this.tiedostonLukija.lueTiedosto("ostoslista.txt");
+    public Ostoslista() {
     }
 
     public Ostos viimeinen() {
@@ -29,6 +25,5 @@ public class Ostoslista {
     }
 
     public void paivita() {
-        this.ostokset = this.tiedostonLukija.lueTiedosto("ostoslista.txt");
     }
 }

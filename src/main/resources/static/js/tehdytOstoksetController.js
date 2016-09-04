@@ -5,5 +5,4 @@ app.controller('TehdytOstoksetController', ['$scope', 'serverCommunication', fun
     pyynto.then(function(data){
         $scope.tehdytOstokset = data;
     });
-    console.log(pyynto);
 }]);
